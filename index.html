@@ -713,6 +713,125 @@ function analyzeCaurivoReceivables() {
 
     result.style.display = "block";
 }
+function analyzeCaurivoExpenses() {
+
+    const salary =
+        Number(document.getElementById("caurivoSalary").value);
+
+    const rent =
+        Number(document.getElementById("caurivoRent").value);
+
+    const marketing =
+        Number(document.getElementById("caurivoMarketing").value);
+
+    const inventory =
+        Number(document.getElementById("caurivoInventory").value);
+
+    const utilities =
+        Number(document.getElementById("caurivoUtilities").value);
+
+    const other =
+        Number(document.getElementById("caurivoOtherExpenses").value);
+
+    const result =
+        document.getElementById("caurivoExpenseResult");
+
+    const totalExpenses =
+        document.getElementById("caurivoTotalExpenses");
+
+    const largestExpense =
+        document.getElementById("caurivoLargestExpense");
+
+    const status =
+        document.getElementById("caurivoExpenseStatus");
+
+    const message =
+        document.getElementById("caurivoExpenseMessage");
+
+    if (
+        salary < 0 ||
+        rent < 0 ||
+        marketing < 0 ||
+        inventory < 0 ||
+        utilities < 0 ||
+        other < 0
+    ) {
+        alert("Please enter valid positive numbers.");
+        return;
+    }
+
+    const expenses = [
+        { name: "Salaries", value: salary },
+        { name: "Rent", value: rent },
+        { name: "Marketing", value: marketing },
+        { name: "Inventory / Purchases", value: inventory },
+        { name: "Utilities", value: utilities },
+        { name: "Other Expenses", value: other }
+    ];
+
+    const total = expenses.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
+
+    if (total <= 0) {
+        alert("Please enter at least one expense.");
+        return;
+    }
+
+    const largest =
+        expenses.reduce(
+            (max, item) =>
+                item.value > max.value ? item : max,
+            expenses[0]
+        );
+
+    const concentration =
+        (largest.value / total) * 100;
+
+    totalExpenses.textContent =
+        "₹" + Math.round(total).toLocaleString("en-IN");
+
+    largestExpense.textContent =
+        largest.name;
+
+    if (concentration >= 50) {
+
+        status.textContent =
+            "🔴 High expense concentration";
+
+        message.textContent =
+            largest.name +
+            " represents " +
+            concentration.toFixed(1) +
+            "% of your total monthly expenses. " +
+            "Review this cost carefully before increasing spending.";
+
+    } else if (concentration >= 35) {
+
+        status.textContent =
+            "🟡 Expense concentration needs attention";
+
+        message.textContent =
+            largest.name +
+            " is your largest expense at " +
+            concentration.toFixed(1) +
+            "% of total expenses. " +
+            "Monitor this category and look for efficiency opportunities.";
+
+    } else {
+
+        status.textContent =
+            "🟢 Expense mix looks relatively balanced";
+
+        message.textContent =
+            "No single expense category dominates your monthly costs. " +
+            "Continue monitoring major expenses and changes over time.";
+
+    }
+
+    result.style.display = "block";
+}
 </script>
 <body>
 
@@ -1518,6 +1637,170 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO RECEIVABLES INTELLIGENCE -->
+    <!-- CAURIVO EXPENSE INTELLIGENCE -->
+
+<section id="expense-intelligence" style="padding:64px 0;background:#f8faff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO EXPENSE INTELLIGENCE
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Understand where your money is going.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter your monthly expenses to identify the biggest cost drivers.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="caurivoSalary"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Salaries (₹)
+          </label>
+
+          <input
+            id="caurivoSalary"
+            type="number"
+            min="0"
+            placeholder="Example: 100000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoRent"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Rent (₹)
+          </label>
+
+          <input
+            id="caurivoRent"
+            type="number"
+            min="0"
+            placeholder="Example: 30000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoMarketing"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Marketing (₹)
+          </label>
+
+          <input
+            id="caurivoMarketing"
+            type="number"
+            min="0"
+            placeholder="Example: 20000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoInventory"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Inventory / Purchases (₹)
+          </label>
+
+          <input
+            id="caurivoInventory"
+            type="number"
+            min="0"
+            placeholder="Example: 150000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoUtilities"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Utilities (₹)
+          </label>
+
+          <input
+            id="caurivoUtilities"
+            type="number"
+            min="0"
+            placeholder="Example: 10000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoOtherExpenses"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Other Expenses (₹)
+          </label>
+
+          <input
+            id="caurivoOtherExpenses"
+            type="number"
+            min="0"
+            placeholder="Example: 20000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="analyzeCaurivoExpenses()"
+        style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+        Analyze My Expenses
+      </button>
+
+      <div
+        id="caurivoExpenseResult"
+        style="display:none;margin-top:28px;">
+
+        <div style="padding:24px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+
+            <div style="background:#f8faff;padding:18px;border-radius:12px;">
+              <p style="color:#667085;">Total Monthly Expenses</p>
+              <h3 id="caurivoTotalExpenses"
+                  style="font-size:28px;margin-top:6px;">
+                ₹0
+              </h3>
+            </div>
+
+            <div style="background:#f8faff;padding:18px;border-radius:12px;">
+              <p style="color:#667085;">Largest Expense</p>
+              <h3 id="caurivoLargestExpense"
+                  style="font-size:24px;margin-top:6px;">
+                —
+              </h3>
+            </div>
+
+          </div>
+
+          <h3 id="caurivoExpenseStatus"
+              style="margin-top:22px;">
+          </h3>
+
+          <p id="caurivoExpenseMessage"
+             style="color:#475467;margin-top:10px;line-height:1.7;">
+          </p>
+
+          <p style="color:#667085;font-size:13px;margin-top:14px;">
+            Simplified demonstration only. Actual expense analysis should
+            consider industry benchmarks, gross margins, seasonality,
+            one-time costs and business context.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO EXPENSE INTELLIGENCE -->
     <!-- FINAL CTA -->
 
 <section class="cta">
