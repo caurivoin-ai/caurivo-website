@@ -1525,6 +1525,151 @@ function runCaurivoDashboard() {
     "Financial Health: " + health
   );
 }
+
+function runCaurivoDashboard() {
+
+function runCaurivoDashboard() {
+  const revenue = Number(
+    document.getElementById("dashboardRevenue")?.value || 0
+  );
+  const profit = Number(
+    document.getElementById("dashboardProfit")?.value || 0
+  );
+  const cash = Number(
+    document.getElementById("dashboardCash")?.value || 0
+  );
+
+  if (revenue <= 0) {
+    alert("Please enter monthly revenue greater than zero.");
+    return;
+  }
+
+  const margin = (profit / revenue) * 100;
+  const money = n => "₹" + n.toLocaleString("en-IN");
+
+  let status = "Healthy";
+  let statusColor = "#15803d";
+  const recommendations = [];
+
+  if (profit < 0) {
+    status = "Critical";
+    statusColor = "#dc2626";
+    recommendations.push(
+      "Your business is making a loss. Review expenses and pricing."
+    );
+  } else if (margin < 10) {
+    status = "Needs Attention";
+    statusColor = "#b45309";
+    recommendations.push(
+      "Your profit margin is below 10%. Review costs and pricing."
+    );
+  } else {
+    recommendations.push(
+      "Monitor monthly profit to maintain profitability."
+    );
+  }
+
+  if (cash <= 0) {
+    status = "Critical";
+    statusColor = "#dc2626";
+    recommendations.push(
+      "Available cash is zero. Review upcoming payment obligations."
+    );
+  } else if (cash < revenue * 0.1) {
+    if (status === "Healthy") {
+      status = "Needs Attention";
+      statusColor = "#b45309";
+    }
+    recommendations.push(
+      "Cash is below 10% of monthly revenue. Monitor upcoming payments."
+    );
+  } else {
+    recommendations.push(
+      "Prepare a forecast of upcoming cash receipts and payments."
+    );
+  }
+
+  let dashboard = document.getElementById("caurivoResults");
+
+  if (!dashboard) {
+    dashboard = document.createElement("div");
+    dashboard.id = "caurivoResults";
+
+    const button = document.querySelector(
+      'button[onclick="runCaurivoDashboard()"]'
+    );
+
+    if (!button) {
+      alert("Dashboard button not found. Please check the button code.");
+      return;
+    }
+
+    button.insertAdjacentElement("afterend", dashboard);
+  }
+
+  dashboard.style.cssText =
+    "margin:24px 0;padding:22px;border:1px solid #dbe3f0;" +
+    "border-radius:16px;background:#f8faff;color:#172033;" +
+    "font-family:Arial,sans-serif;";
+
+  dashboard.innerHTML = `
+    <h2 style="color:#2448b8">CAURIVO CFO DASHBOARD</h2>
+    <p>Your Business Financial Overview</p>
+
+    <div style="display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:12px">
+
+      <div style="background:white;padding:16px;border-radius:12px">
+        <p>Monthly Revenue</p>
+        <h3>${money(revenue)}</h3>
+      </div>
+
+      <div style="background:white;padding:16px;border-radius:12px">
+        <p>Monthly Profit</p>
+        <h3>${money(profit)}</h3>
+      </div>
+
+      <div style="background:white;padding:16px;border-radius:12px">
+        <p>Profit Margin</p>
+        <h3>${margin.toFixed(2)}%</h3>
+      </div>
+
+      <div style="background:white;padding:16px;border-radius:12px">
+        <p>Available Cash</p>
+        <h3>${money(cash)}</h3>
+      </div>
+    </div>
+
+    <div style="background:white;padding:16px;
+      border-radius:12px;margin-top:16px">
+      <h3>Financial Health</h3>
+      <p style="color:${statusColor};font-weight:bold">${status}</p>
+    </div>
+
+    <div style="background:white;padding:16px;
+      border-radius:12px;margin-top:12px">
+      <h3>CFO Recommendations</h3>
+      <ul>${recommendations.map(
+        item => `<li style="margin-bottom:8px">${item}</li>`
+      ).join("")}</ul>
+    </div>
+
+    <p style="font-size:12px;color:#667085">
+      Preliminary rule-based analysis. Not an AI-generated forecast.
+    </p>
+  `;
+
+  dashboard.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+}
+
+</script>
+  
 </script>
 <body>
 
@@ -2907,153 +3052,11 @@ accessible and actionable.
           <label for="dashboard
    <button
   type="button"
-  onclick=function runCaurivoDashboard() {
-  const revenue = Number(
-    document.getElementById("dashboardRevenue")?.value || 0
-  );
-  const profit = Number(
-    document.getElementById("dashboardProfit")?.value || 0
-  );
-  const cash = Number(
-    document.getElementById("dashboardCash")?.value || 0
-  );
-
-  if (revenue <= 0) {
-    alert("Please enter monthly revenue greater than zero.");
-    return;
-  }
-
-  const margin = (profit / revenue) * 100;
-  const money = n => "₹" + n.toLocaleString("en-IN", {
-    maximumFractionDigits: 2
-  });
-
-  let status = "Healthy";
-  let statusColor = "#15803d";
-  let recommendations = [];
-
-  if (profit < 0) {
-    status = "Critical";
-    statusColor = "#dc2626";
-    recommendations.push(
-      "Your business is making a loss. Review expenses, pricing and sales."
-    );
-  } else if (margin < 10) {
-    status = "Needs Attention";
-    statusColor = "#b45309";
-    recommendations.push(
-      "Your profit margin is below 10%. Review operating costs and pricing."
-    );
-  } else {
-    recommendations.push(
-      "Review your profit trend each month to maintain profitability."
-    );
-  }
-
-  if (cash <= 0) {
-    status = "Critical";
-    statusColor = "#dc2626";
-    recommendations.push(
-      "Available cash is zero or negative. Review immediate payment obligations."
-    );
-  } else if (cash < revenue * 0.1) {
-    if (status === "Healthy") {
-      status = "Needs Attention";
-      statusColor = "#b45309";
-    }
-    recommendations.push(
-      "Your available cash is below 10% of monthly revenue. Monitor upcoming payments."
-    );
-  } else {
-    recommendations.push(
-      "Prepare a cash-flow forecast covering upcoming receipts and payments."
-    );
-  }
-
-  const button = document.querySelector(
-    'button[onclick="runCaurivoDashboard()"]'
-  );
-
-  let dashboard = document.getElementById("caurivoResults");
-
-  if (!dashboard) {
-    dashboard = document.createElement("div");
-    dashboard.id = "caurivoResults";
-    button.insertAdjacentElement("afterend", dashboard);
-  }
-
-  dashboard.style.cssText =
-    "margin:24px 0;padding:22px;border:1px solid #dbe3f0;" +
-    "border-radius:16px;background:#f8faff;color:#172033;" +
-    "font-family:Arial,sans-serif;";
-
-  dashboard.innerHTML = `
-    <h2 style="margin:0 0 6px;color:#2448b8;">
-      CAURIVO CFO DASHBOARD
-    </h2>
-
-    <p style="color:#667085;margin:0 0 20px;">
-      Your Business Financial Overview
-    </p>
-
-    <div style="display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      gap:12px;">
-
-      <div style="background:white;padding:16px;border-radius:12px;">
-        <p style="margin:0 0 8px;color:#667085;">Monthly Revenue</p>
-        <h3 style="margin:0;">${money(revenue)}</h3>
-      </div>
-
-      <div style="background:white;padding:16px;border-radius:12px;">
-        <p style="margin:0 0 8px;color:#667085;">Monthly Profit</p>
-        <h3 style="margin:0;color:${profit < 0 ? "#dc2626" : "#15803d"};">
-          ${money(profit)}
-        </h3>
-      </div>
-
-      <div style="background:white;padding:16px;border-radius:12px;">
-        <p style="margin:0 0 8px;color:#667085;">Profit Margin</p>
-        <h3 style="margin:0;">${margin.toFixed(2)}%</h3>
-      </div>
-
-      <div style="background:white;padding:16px;border-radius:12px;">
-        <p style="margin:0 0 8px;color:#667085;">Available Cash</p>
-        <h3 style="margin:0;">${money(cash)}</h3>
-      </div>
-    </div>
-
-    <div style="background:white;padding:18px;border-radius:12px;
-      margin-top:16px;">
-      <h3 style="margin:0 0 10px;">Financial Health</h3>
-      <p style="margin:0;color:${statusColor};font-weight:700;">
-        ${status}
-      </p>
-    </div>
-
-    <div style="background:white;padding:18px;border-radius:12px;
-      margin-top:12px;">
-      <h3 style="margin:0 0 12px;">CFO Recommendations</h3>
-      <ul style="padding-left:20px;margin:0;line-height:1.8;">
-        ${recommendations.map(item => `<li>${item}</li>`).join("")}
-      </ul>
-    </div>
-
-    <p style="font-size:12px;color:#667085;margin:16px 0 0;">
-      Initial rule-based analysis using the figures entered.
-      Recommendations are indicative, not a substitute for a
-      complete cash-flow forecast or professional financial advice.
-    </p>
-  `;
-
-  dashboard.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
+  onclick="function runCaurivoDashboard()"
   style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
   Generate CFO Dashboard
 </button>
+      
               <!-- FINAL CTA -->
 
 <section class="cta">
