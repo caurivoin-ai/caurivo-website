@@ -1665,11 +1665,85 @@ function runCaurivoDashboard() {
     block: "start"
   });
 }
+  
+function runCaurivoCashForecast() {
+  const cash = Number(
+    document.getElementById("dashboardCash")?.value || 0
+  );
 
+  const receipts = Number(
+    document.getElementById("forecastReceipts")?.value || 0
+  );
+
+  const payments = Number(
+    document.getElementById("forecastPayments")?.value || 0
+  );
+
+  if (
+    document.getElementById("dashboardCash").value === "" ||
+    document.getElementById("forecastReceipts").value === "" ||
+    document.getElementById("forecastPayments").value === ""
+  ) {
+    alert("Please enter available cash, expected receipts, and expected payments.");
+    return;
+  }
+
+  const projectedCash = cash + receipts - payments;
+  const money = n => "₹" + n.toLocaleString("en-IN");
+
+  let status = "Cash Surplus";
+  let color = "#15803d";
+  let advice = "Your projected cash balance is positive. Continue monitoring upcoming payments.";
+
+  if (projectedCash < 0) {
+    status = "Cash Shortage Warning";
+    color = "#dc2626";
+    advice = "Projected payments exceed available cash and receipts. Review spending and follow up on receivables.";
+  } else if (projectedCash === 0) {
+    status = "Critical: Zero Cash";
+    color = "#b45309";
+    advice = "Your projected cash balance is zero. Arrange funds for unexpected expenses.";
+  }
+
+  let result = document.getElementById("caurivoCashForecast");
+
+  if (!result) {
+    result = document.createElement("div");
+    result.id = "caurivoCashForecast";
+
+    const button = document.getElementById("generateCashForecast");
+
+    if (!button) {
+      alert("Forecast button not found.");
+      return;
+    }
+
+    button.insertAdjacentElement("afterend", result);
+  }
+
+  result.style.cssText =
+    "margin-top:20px;padding:20px;border:1px solid #dbe3f0;" +
+    "border-radius:14px;background:#f8faff;color:#172033;";
+
+  result.innerHTML = `
+    <h2 style="color:#2448b8">CAURIVO CASH FLOW FORECAST</h2>
+    <p>Current Available Cash: <strong>${money(cash)}</strong></p>
+    <p>Expected Cash Receipts: <strong>${money(receipts)}</strong></p>
+    <p>Expected Cash Payments: <strong>${money(payments)}</strong></p>
+    <hr>
+    <h3>Projected Cash Balance</h3>
+    <h2 style="color:${color}">${money(projectedCash)}</h2>
+    <p style="color:${color};font-weight:bold">${status}</p>
+    <p>${advice}</p>
+    <p style="font-size:12px;color:#667085">
+      This is a basic forecast for the figures and period you entered.
+      Actual results may differ.
+    </p>
+  `;
+
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-</script>
-  
 </script>
 <body>
 
@@ -3080,6 +3154,15 @@ accessible and actionable.
   style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
   Generate CFO Dashboard Botton 
 </button>
+              
+<button
+  id="generateCashForecast"
+  type="button"
+  onclick="runCaurivoCashForecast()"
+  style="margin-top:14px;background:#15803d;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;width:100%;">
+  Generate Cash Flow Forecast
+</button>
+
       
               <!-- FINAL CTA -->
 
