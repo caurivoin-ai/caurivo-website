@@ -496,7 +496,144 @@ function calculateCaurivoProfit() {
 
     result.style.display = "block";
 }
+function calculateCaurivoCashFlow() {
 
+    const openingCash =
+        Number(document.getElementById("caurivoOpeningCash").value);
+
+    const collections =
+        Number(document.getElementById("caurivoCollections").value);
+
+    const expenses =
+        Number(document.getElementById("caurivoCashExpenses").value);
+
+    const emi =
+        Number(document.getElementById("caurivoEMI").value);
+
+    const result =
+        document.getElementById("caurivoCashFlowResult");
+
+    const closingCash =
+        document.getElementById("caurivoClosingCash");
+
+    const status =
+        document.getElementById("caurivoCashStatus");
+
+    const message =
+        document.getElementById("caurivoCashMessage");
+
+    if (openingCash < 0 || collections < 0 || expenses < 0 || emi < 0) {
+        alert("Please enter valid positive numbers.");
+        return;
+    }
+
+    const estimatedClosingCash =
+        openingCash + collections - expenses - emi;
+
+    closingCash.textContent =
+        "₹" + Math.round(estimatedClosingCash).toLocaleString("en-IN");
+
+    if (estimatedClosingCash > 100000) {
+
+        status.textContent =
+            "🟢 Healthy cash position";
+
+        message.textContent =
+            "Based on these inputs, your estimated closing cash remains positive. " +
+            "Caurivo can eventually monitor upcoming inflows and outflows " +
+            "to identify changes before they become problems.";
+
+    } else if (estimatedClosingCash >= 0) {
+
+        status.textContent =
+            "🟡 Cash needs attention";
+
+        message.textContent =
+            "Your estimated closing cash is positive but relatively low. " +
+            "Consider monitoring collections and upcoming payments closely.";
+
+    } else {
+
+        status.textContent =
+            "🔴 Potential cash shortage";
+
+        message.textContent =
+            "Your expected cash outflows are higher than your available cash " +
+            "and expected collections. This simplified model indicates a potential shortage.";
+
+    }
+
+    result.style.display = "block";
+}
+function calculateCaurivoCashFlow() {
+
+    const openingCash =
+        Number(document.getElementById("caurivoOpeningCash").value);
+
+    const collections =
+        Number(document.getElementById("caurivoCollections").value);
+
+    const expenses =
+        Number(document.getElementById("caurivoCashExpenses").value);
+
+    const emi =
+        Number(document.getElementById("caurivoEMI").value);
+
+    const result =
+        document.getElementById("caurivoCashFlowResult");
+
+    const closingCash =
+        document.getElementById("caurivoClosingCash");
+
+    const status =
+        document.getElementById("caurivoCashStatus");
+
+    const message =
+        document.getElementById("caurivoCashMessage");
+
+    if (openingCash < 0 || collections < 0 || expenses < 0 || emi < 0) {
+        alert("Please enter valid positive numbers.");
+        return;
+    }
+
+    const estimatedClosingCash =
+        openingCash + collections - expenses - emi;
+
+    closingCash.textContent =
+        "₹" + Math.round(estimatedClosingCash).toLocaleString("en-IN");
+
+    if (estimatedClosingCash > 100000) {
+
+        status.textContent =
+            "🟢 Healthy cash position";
+
+        message.textContent =
+            "Based on these inputs, your estimated closing cash remains positive. " +
+            "Caurivo can eventually monitor upcoming inflows and outflows " +
+            "to identify changes before they become problems.";
+
+    } else if (estimatedClosingCash >= 0) {
+
+        status.textContent =
+            "🟡 Cash needs attention";
+
+        message.textContent =
+            "Your estimated closing cash is positive but relatively low. " +
+            "Consider monitoring collections and upcoming payments closely.";
+
+    } else {
+
+        status.textContent =
+            "🔴 Potential cash shortage";
+
+        message.textContent =
+            "Your expected cash outflows are higher than your available cash " +
+            "and expected collections. This simplified model indicates a potential shortage.";
+
+    }
+
+    result.style.display = "block";
+}
 </script>
 <body>
 
@@ -1040,7 +1177,133 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO INTERACTIVE PROFIT CALCULATOR -->
-<!-- FINAL CTA -->
+<!-- CAURIVO CASH-FLOW INTELLIGENCE -->
+
+<section id="cash-flow" style="padding:64px 0;background:#f8faff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO CASH-FLOW INTELLIGENCE
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Know your cash position before it becomes a problem.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter a few monthly numbers to estimate your closing cash position.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="caurivoOpeningCash"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Current Cash Balance (₹)
+          </label>
+
+          <input
+            id="caurivoOpeningCash"
+            type="number"
+            min="0"
+            placeholder="Example: 200000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoCollections"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Expected Customer Collections (₹)
+          </label>
+
+          <input
+            id="caurivoCollections"
+            type="number"
+            min="0"
+            placeholder="Example: 300000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoCashExpenses"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Upcoming Expenses (₹)
+          </label>
+
+          <input
+            id="caurivoCashExpenses"
+            type="number"
+            min="0"
+            placeholder="Example: 250000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoEMI"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Loan / EMI Payments (₹)
+          </label>
+
+          <input
+            id="caurivoEMI"
+            type="number"
+            min="0"
+            placeholder="Example: 30000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="calculateCaurivoCashFlow()"
+        style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+        Check My Cash Position
+      </button>
+
+      <div
+        id="caurivoCashFlowResult"
+        style="display:none;margin-top:28px;">
+
+        <div style="padding:24px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <p style="color:#667085;">Estimated Closing Cash</p>
+
+          <h3
+            id="caurivoClosingCash"
+            style="font-size:32px;margin:8px 0;">
+            ₹0
+          </h3>
+
+          <h3
+            id="caurivoCashStatus"
+            style="margin-top:14px;">
+          </h3>
+
+          <p
+            id="caurivoCashMessage"
+            style="color:#475467;margin-top:10px;line-height:1.7;">
+          </p>
+
+          <p style="color:#667085;font-size:13px;margin-top:14px;">
+            Simplified demonstration only. Actual cash-flow analysis would
+            consider payment timing, receivables, payables, taxes,
+            inventory, financing and other business factors.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO CASH-FLOW INTELLIGENCE -->
+    <!-- FINAL CTA -->
 
 <section class="cta">
 
