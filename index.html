@@ -429,7 +429,75 @@ footer a:hover{
 
 </style>
 </head>
+<script>
 
+function calculateCaurivoProfit() {
+
+    const revenue =
+        Number(document.getElementById("caurivoRevenue").value);
+
+    const expenses =
+        Number(document.getElementById("caurivoExpenses").value);
+
+    const result =
+        document.getElementById("caurivoProfitResult");
+
+    const profit =
+        document.getElementById("caurivoProfit");
+
+    const margin =
+        document.getElementById("caurivoMargin");
+
+    const message =
+        document.getElementById("caurivoProfitMessage");
+
+    if (revenue <= 0) {
+        alert("Please enter a valid monthly revenue.");
+        return;
+    }
+
+    if (expenses < 0) {
+        alert("Expenses cannot be negative.");
+        return;
+    }
+
+    const estimatedProfit = revenue - expenses;
+
+    const profitMargin =
+        (estimatedProfit / revenue) * 100;
+
+    profit.textContent =
+        "₹" + Math.round(estimatedProfit).toLocaleString("en-IN");
+
+    margin.textContent =
+        profitMargin.toFixed(1) + "%";
+
+    if (estimatedProfit > 0) {
+
+        message.textContent =
+            "Your business is showing an estimated monthly profit. " +
+            "Caurivo can eventually go further by analysing why " +
+            "profit is changing and what actions could improve it.";
+
+    } else if (estimatedProfit === 0) {
+
+        message.textContent =
+            "Your revenue and expenses are currently equal. " +
+            "The business is at break-even based on these inputs.";
+
+    } else {
+
+        message.textContent =
+            "Your expenses are higher than your revenue in this example. " +
+            "Caurivo can eventually help identify the biggest drivers " +
+            "behind the loss and suggest actions.";
+
+    }
+
+    result.style.display = "block";
+}
+
+</script>
 <body>
 
 <!-- NAVIGATION -->
@@ -875,7 +943,103 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO FINANCIAL DASHBOARD DEMO -->
+<!-- CAURIVO INTERACTIVE PROFIT CALCULATOR -->
 
+<section id="profit-calculator" style="padding:64px 0;background:#ffffff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO PROFIT INTELLIGENCE
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Understand your profit in seconds.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter your monthly revenue and expenses to see an instant estimate.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+
+      <div>
+        <label for="caurivoRevenue"
+               style="display:block;font-weight:700;margin-bottom:8px;">
+          Monthly Revenue (₹)
+        </label>
+
+        <input
+          id="caurivoRevenue"
+          type="number"
+          min="0"
+          placeholder="Example: 500000"
+          style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+      </div>
+
+      <div>
+        <label for="caurivoExpenses"
+               style="display:block;font-weight:700;margin-bottom:8px;">
+          Monthly Expenses (₹)
+        </label>
+
+        <input
+          id="caurivoExpenses"
+          type="number"
+          min="0"
+          placeholder="Example: 380000"
+          style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      onclick="calculateCaurivoProfit()"
+      style="margin-top:20px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+      Calculate My Profit
+    </button>
+
+    <div
+      id="caurivoProfitResult"
+      style="display:none;margin-top:28px;padding:24px;background:#f8faff;border:1px solid #e2e8f0;border-radius:16px;">
+
+      <h3>Your estimated result</h3>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:18px;">
+
+        <div style="background:#fff;padding:18px;border-radius:12px;">
+          <p style="color:#667085;">Estimated Profit</p>
+          <h3 id="caurivoProfit"
+              style="font-size:28px;margin-top:6px;">
+            ₹0
+          </h3>
+        </div>
+
+        <div style="background:#fff;padding:18px;border-radius:12px;">
+          <p style="color:#667085;">Profit Margin</p>
+          <h3 id="caurivoMargin"
+              style="font-size:28px;margin-top:6px;">
+            0%
+          </h3>
+        </div>
+
+      </div>
+
+      <p id="caurivoProfitMessage"
+         style="color:#475467;margin-top:18px;">
+      </p>
+
+      <p style="color:#667085;font-size:13px;margin-top:12px;">
+        This is a simplified estimate for demonstration purposes.
+        It is not accounting, tax, investment, or financial advice.
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO INTERACTIVE PROFIT CALCULATOR -->
 <!-- FINAL CTA -->
 
 <section class="cta">
