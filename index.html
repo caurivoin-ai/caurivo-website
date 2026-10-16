@@ -3,231 +3,661 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Caurivo — Your AI CFO</title>
+<title>Caurivo — AI CFO for Growing Businesses</title>
 
 <style>
+:root{
+    --ink:#101828;
+    --muted:#667085;
+    --blue:#3157c8;
+    --blue2:#eaf0ff;
+    --line:#e5e7eb;
+    --white:#ffffff;
+    --soft:#f7f9fc;
+    --green:#14804a;
+    --greenbg:#e8f7ef;
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f7f9fc;
-    color:#111827;
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--white);
+    color:var(--ink);
     line-height:1.6;
 }
 
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.container{
+    width:min(1120px,92%);
+    margin:auto;
+}
+
+/* NAVIGATION */
+
 nav{
-    padding:20px 7%;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+}
+
+.nav-inner{
+    min-height:72px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    background:white;
-    border-bottom:1px solid #e5e7eb;
+    justify-content:space-between;
 }
 
 .logo{
     font-size:25px;
-    font-weight:800;
+    font-weight:900;
+    letter-spacing:-1.5px;
 }
 
-nav a{
-    text-decoration:none;
-    background:#111827;
-    color:white;
-    padding:10px 17px;
-    border-radius:8px;
+.logo span{
+    color:var(--blue);
 }
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.nav-links a{
+    font-size:14px;
+    font-weight:600;
+    color:#475467;
+}
+
+.nav-cta{
+    background:var(--ink);
+    color:white !important;
+    padding:11px 17px;
+    border-radius:9px;
+}
+
+/* HERO */
 
 .hero{
-    padding:100px 7%;
-    text-align:center;
-    background:linear-gradient(180deg,#fff,#eef3ff);
+    padding:92px 0 85px;
+    background:
+        radial-gradient(circle at 50% 0%,#eaf0ff 0%,transparent 42%),
+        linear-gradient(180deg,#ffffff 0%,#f6f8ff 100%);
+    overflow:hidden;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:65px;
+    align-items:center;
 }
 
 .badge{
-    display:inline-block;
-    background:#e5edff;
-    color:#3157a6;
-    padding:7px 14px;
-    border-radius:30px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--blue2);
+    color:#29499f;
+    border:1px solid #d8e2ff;
+    padding:7px 13px;
+    border-radius:50px;
     font-size:13px;
-    font-weight:bold;
-    margin-bottom:20px;
+    font-weight:800;
+    margin-bottom:22px;
+}
+
+.badge-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#3157c8;
 }
 
 .hero h1{
-    font-size:clamp(42px,8vw,78px);
-    line-height:1.05;
-    letter-spacing:-3px;
+    font-size:clamp(48px,6vw,78px);
+    line-height:1.02;
+    letter-spacing:-4px;
+    max-width:680px;
 }
 
 .hero h1 span{
-    color:#3157a6;
+    color:var(--blue);
 }
 
-.hero p{
-    max-width:680px;
-    margin:25px auto;
-    color:#667085;
+.hero-text{
+    color:var(--muted);
     font-size:18px;
+    max-width:600px;
+    margin:25px 0;
 }
 
-.buttons{
+.hero-actions{
     display:flex;
-    justify-content:center;
-    gap:12px;
     flex-wrap:wrap;
-    margin-top:30px;
+    gap:12px;
+    margin-top:28px;
 }
 
-.button{
-    text-decoration:none;
-    padding:14px 22px;
-    border-radius:9px;
-    font-weight:bold;
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 21px;
+    border-radius:10px;
+    font-weight:800;
+    border:1px solid transparent;
 }
 
-.primary{
-    background:#111827;
+.btn-primary{
+    background:var(--ink);
     color:white;
 }
 
-.secondary{
+.btn-secondary{
     background:white;
-    color:#111827;
-    border:1px solid #d1d5db;
+    border-color:#d0d5dd;
 }
+
+/* DASHBOARD */
+
+.dashboard-wrap{
+    position:relative;
+}
+
+.dashboard{
+    background:#101828;
+    color:white;
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 30px 80px rgba(16,24,40,.2);
+    transform:rotate(1deg);
+}
+
+.dashboard-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.dashboard-title{
+    font-weight:800;
+}
+
+.live{
+    background:#183b2c;
+    color:#72e3a8;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.dash-card{
+    background:#182230;
+    border:1px solid #273444;
+    border-radius:13px;
+    padding:16px;
+    margin-bottom:12px;
+}
+
+.dash-label{
+    color:#98a2b3;
+    font-size:12px;
+}
+
+.dash-value{
+    font-size:26px;
+    font-weight:900;
+    margin:2px 0;
+}
+
+.dash-positive{
+    color:#6ee7a4;
+    font-size:12px;
+}
+
+.dash-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.risk{
+    background:#3a2818;
+    border:1px solid #65411e;
+}
+
+.risk-title{
+    color:#ffcb83;
+    font-weight:800;
+    font-size:13px;
+}
+
+.risk p{
+    color:#d0d5dd;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.ai-box{
+    background:linear-gradient(135deg,#3157c8,#5438b8);
+    border-radius:13px;
+    padding:16px;
+}
+
+.ai-label{
+    font-size:11px;
+    opacity:.8;
+}
+
+.ai-box h3{
+    margin:3px 0 5px;
+}
+
+.ai-box p{
+    font-size:12px;
+    opacity:.9;
+}
+
+/* TRUST */
+
+.trust{
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+    background:white;
+}
+
+.trust-inner{
+    display:flex;
+    justify-content:center;
+    text-align:center;
+}
+
+.trust p{
+    color:#98a2b3;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* SECTION */
 
 section{
-    padding:90px 7%;
+    padding:100px 0;
 }
 
-.heading{
+.section-heading{
     max-width:700px;
-    margin-bottom:45px;
+    margin-bottom:50px;
 }
 
-.heading h2{
-    font-size:42px;
-    line-height:1.15;
-    margin-bottom:15px;
+.eyebrow{
+    color:var(--blue);
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
 }
 
-.heading p{
-    color:#667085;
+.section-heading h2{
+    font-size:clamp(35px,5vw,52px);
+    line-height:1.1;
+    letter-spacing:-2px;
 }
+
+.section-heading p{
+    color:var(--muted);
+    font-size:17px;
+    margin-top:15px;
+}
+
+/* FEATURES */
 
 .features{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:20px;
+    gap:18px;
 }
 
-.card{
+.feature{
+    padding:28px;
+    border:1px solid var(--line);
+    border-radius:18px;
     background:white;
-    padding:30px;
-    border:1px solid #e5e7eb;
-    border-radius:16px;
+    transition:.25s;
 }
 
-.icon{
-    font-size:30px;
-    margin-bottom:15px;
+.feature:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 40px rgba(16,24,40,.08);
 }
 
-.card h3{
-    margin-bottom:10px;
+.feature-icon{
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:13px;
+    background:var(--blue2);
+    font-size:23px;
+    margin-bottom:20px;
 }
 
-.card p{
-    color:#667085;
-    font-size:15px;
+.feature h3{
+    font-size:19px;
+    margin-bottom:8px;
 }
+
+.feature p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* INTELLIGENCE */
+
+.intelligence{
+    background:var(--soft);
+}
+
+.intelligence-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:55px;
+    align-items:center;
+}
+
+.intelligence-list{
+    display:grid;
+    gap:13px;
+}
+
+.intel-item{
+    display:flex;
+    gap:15px;
+    background:white;
+    border:1px solid var(--line);
+    padding:18px;
+    border-radius:14px;
+}
+
+.intel-number{
+    font-weight:900;
+    color:var(--blue);
+}
+
+.intel-item h3{
+    font-size:16px;
+}
+
+.intel-item p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* CASHFLOW VISUAL */
+
+.chart-card{
+    background:#101828;
+    color:white;
+    padding:27px;
+    border-radius:22px;
+    box-shadow:0 25px 60px rgba(16,24,40,.15);
+}
+
+.chart-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.chart-header span{
+    color:#98a2b3;
+    font-size:12px;
+}
+
+.chart{
+    height:190px;
+    display:flex;
+    align-items:end;
+    gap:9px;
+    border-bottom:1px solid #344054;
+}
+
+.bar{
+    flex:1;
+    background:linear-gradient(180deg,#6688ff,#3157c8);
+    border-radius:6px 6px 0 0;
+}
+
+.chart-note{
+    margin-top:20px;
+    background:#182230;
+    border:1px solid #273444;
+    padding:14px;
+    border-radius:12px;
+}
+
+.chart-note strong{
+    color:#72e3a8;
+}
+
+/* WORKFLOW */
 
 .workflow{
-    background:#111827;
+    background:#101828;
     color:white;
 }
 
-.workflow .heading p{
-    color:#b8c0cc;
+.workflow .section-heading p{
+    color:#98a2b3;
 }
 
 .steps{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:20px;
+    gap:15px;
 }
 
 .step{
-    border:1px solid #374151;
+    border:1px solid #273444;
+    border-radius:16px;
     padding:25px;
-    border-radius:14px;
+    background:#151f2d;
 }
 
-.step small{
-    color:#9ca3af;
+.step-number{
+    color:#7892ff;
+    font-weight:900;
+    font-size:13px;
+}
+
+.step h3{
+    margin:30px 0 8px;
 }
 
 .step p{
-    color:#b8c0cc;
-    font-size:14px;
+    color:#98a2b3;
+    font-size:13px;
 }
 
-.cta{
+/* POSITIONING */
+
+.position{
     text-align:center;
-    background:#eef3ff;
+}
+
+.position-box{
+    max-width:850px;
+    margin:auto;
+    padding:65px 35px;
+    background:linear-gradient(135deg,#eef3ff,#f8f5ff);
+    border:1px solid #dfe6ff;
+    border-radius:25px;
+}
+
+.position-box h2{
+    font-size:clamp(34px,5vw,55px);
+    line-height:1.1;
+    letter-spacing:-2px;
+}
+
+.position-box p{
+    color:var(--muted);
+    max-width:650px;
+    margin:20px auto 0;
+    font-size:17px;
+}
+
+/* CTA */
+
+.cta{
+    padding:100px 0;
+    background:var(--blue);
+    color:white;
+    text-align:center;
 }
 
 .cta h2{
-    font-size:45px;
+    font-size:clamp(38px,6vw,62px);
+    line-height:1.05;
+    letter-spacing:-2px;
 }
 
 .cta p{
     max-width:600px;
-    margin:15px auto;
-    color:#667085;
+    margin:18px auto;
+    color:#dbe4ff;
 }
 
-.cta a{
-    display:inline-block;
-    margin-top:20px;
-    background:#111827;
-    color:white;
-    padding:14px 23px;
-    border-radius:9px;
-    text-decoration:none;
-    font-weight:bold;
+.cta .btn{
+    background:white;
+    color:var(--ink);
+    margin-top:15px;
 }
+
+/* FOOTER */
 
 footer{
-    text-align:center;
-    padding:30px;
-    background:white;
-    color:#667085;
+    background:#0b1220;
+    color:#98a2b3;
+    padding:35px 0;
 }
 
-@media(max-width:800px){
+.footer-inner{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+}
 
-    .features,
+.footer-logo{
+    color:white;
+    font-weight:900;
+}
+
+footer p{
+    font-size:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+    .nav-links a:not(.nav-cta){
+        display:none;
+    }
+
+    .hero{
+        padding:65px 0;
+    }
+
+    .hero-grid,
+    .intelligence-grid{
+        grid-template-columns:1fr;
+        gap:45px;
+    }
+
+    .hero h1{
+        font-size:49px;
+        letter-spacing:-2.8px;
+    }
+
+    .dashboard{
+        transform:none;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr 1fr;
+    }
+
+    section{
+        padding:75px 0;
+    }
+}
+
+@media(max-width:550px){
+
+    .nav-inner{
+        min-height:64px;
+    }
+
+    .nav-cta{
+        padding:9px 12px;
+        font-size:12px;
+    }
+
+    .hero h1{
+        font-size:43px;
+    }
+
+    .hero-text{
+        font-size:16px;
+    }
+
+    .hero-actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .dash-grid{
+        grid-template-columns:1fr;
+    }
+
     .steps{
         grid-template-columns:1fr;
     }
 
-    .hero{
-        padding:70px 7%;
+    .position-box{
+        padding:45px 22px;
     }
 
-    .heading h2{
-        font-size:34px;
-    }
-
-    .cta h2{
-        font-size:35px;
+    .footer-inner{
+        flex-direction:column;
     }
 }
 </style>
@@ -236,195 +666,459 @@ footer{
 <body>
 
 <nav>
-    <div class="logo">CAURIVO</div>
+<div class="container nav-inner">
 
-    <a href="#early-access">
-        Get Early Access
-    </a>
+<a href="#" class="logo">CAURI<span>VO</span></a>
+
+<div class="nav-links">
+<a href="#intelligence">Platform</a>
+<a href="#features">Intelligence</a>
+<a href="#how">How it works</a>
+<a href="#early-access" class="nav-cta">Get Early Access</a>
+</div>
+
+</div>
 </nav>
+
+<main>
+
+<!-- HERO -->
 
 <section class="hero">
 
-    <div class="badge">
-        AI-Powered Financial Intelligence
-    </div>
+<div class="container hero-grid">
 
-    <h1>
-        Your <span>AI CFO</span><br>
-        for your business.
-    </h1>
+<div>
 
-    <p>
-        Caurivo turns business financial data into
-        clear insights, forecasts, warnings and actions —
-        helping business owners make better decisions.
-    </p>
+<div class="badge">
+<span class="badge-dot"></span>
+AI-Powered Financial Intelligence
+</div>
 
-    <div class="buttons">
+<h1>
+Your <span>AI CFO</span><br>
+for smarter business decisions.
+</h1>
 
-        <a href="#early-access" class="button primary">
-            Get Early Access
-        </a>
+<p class="hero-text">
+Caurivo turns your business financial data into
+clear insights, forecasts, warnings and actions —
+so you can understand your business and decide
+what to do next.
+</p>
 
-        <a href="#features" class="button secondary">
-            Explore Caurivo
-        </a>
+<div class="hero-actions">
 
-    </div>
+<a href="#early-access" class="btn btn-primary">
+Get Early Access →
+</a>
+
+<a href="#features" class="btn btn-secondary">
+Explore Caurivo
+</a>
+
+</div>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="dashboard-wrap">
+
+<div class="dashboard">
+
+<div class="dashboard-top">
+<div class="dashboard-title">Caurivo AI CFO</div>
+<div class="live">● LIVE</div>
+</div>
+
+<div class="dash-card">
+
+<div class="dash-label">
+Cash position
+</div>
+
+<div class="dash-value">
+₹8.4L
+</div>
+
+<div class="dash-positive">
+↑ 12.8% vs last month
+</div>
+
+</div>
+
+<div class="dash-grid">
+
+<div class="dash-card">
+<div class="dash-label">Revenue</div>
+<div class="dash-value">₹24.6L</div>
+</div>
+
+<div class="dash-card">
+<div class="dash-label">Gross margin</div>
+<div class="dash-value">32.4%</div>
+</div>
+
+</div>
+
+<div class="dash-card risk">
+
+<div class="risk-title">
+⚠ Cash-flow attention needed
+</div>
+
+<p>
+₹2.1L of receivables are overdue.
+Your projected cash balance may tighten
+in the next 21 days.
+</p>
+
+</div>
+
+<div class="ai-box">
+
+<div class="ai-label">
+CAURIVO AI RECOMMENDATION
+</div>
+
+<h3>Follow up on 7 overdue invoices.</h3>
+
+<p>
+Collecting ₹1.4L this week could
+improve your projected cash position.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
+
+<!-- TRUST -->
+
+<div class="trust">
+
+<div class="container trust-inner">
+
+<p>
+BUILT FOR BUSINESS OWNERS WHO WANT MORE THAN ACCOUNTING REPORTS.
+</p>
+
+</div>
+
+</div>
+
+<!-- FEATURES -->
 
 <section id="features">
 
-    <div class="heading">
+<div class="container">
 
-        <h2>
-            From financial data
-            to better decisions.
-        </h2>
+<div class="section-heading">
 
-        <p>
-            Caurivo helps business owners understand
-            what is happening, what could happen next,
-            and what they should do.
-        </p>
+<div class="eyebrow">Financial intelligence</div>
 
-    </div>
+<h2>
+One financial brain for your business.
+</h2>
 
-    <div class="features">
+<p>
+Caurivo connects the dots across your finances
+and turns numbers into understandable business intelligence.
+</p>
 
-        <div class="card">
-            <div class="icon">💰</div>
-            <h3>Profit Intelligence</h3>
-            <p>
-                Understand where your profit is coming
-                from and where it is disappearing.
-            </p>
-        </div>
+</div>
 
-        <div class="card">
-            <div class="icon">💵</div>
-            <h3>Cash Flow Intelligence</h3>
-            <p>
-                Identify potential cash shortages before
-                they become business problems.
-            </p>
-        </div>
+<div class="features">
 
-        <div class="card">
-            <div class="icon">📥</div>
-            <h3>Receivables Intelligence</h3>
-            <p>
-                Understand overdue payments and their
-                impact on your cash flow.
-            </p>
-        </div>
+<div class="feature">
+<div class="feature-icon">💰</div>
+<h3>Profit Intelligence</h3>
+<p>
+See what is driving your profit, where margins
+are changing and what deserves your attention.
+</p>
+</div>
 
-        <div class="card">
-            <div class="icon">💳</div>
-            <h3>Expense Intelligence</h3>
-            <p>
-                Find unusual spending and opportunities
-                to improve your margins.
-            </p>
-        </div>
+<div class="feature">
+<div class="feature-icon">💵</div>
+<h3>Cash Flow Intelligence</h3>
+<p>
+Understand your current cash position and
+spot potential shortages before they happen.
+</p>
+</div>
 
-        <div class="card">
-            <div class="icon">📦</div>
-            <h3>Inventory Intelligence</h3>
-            <p>
-                Understand slow-moving inventory and
-                its effect on working capital.
-            </p>
-        </div>
+<div class="feature">
+<div class="feature-icon">📥</div>
+<h3>Receivables Intelligence</h3>
+<p>
+Identify overdue customers and understand
+how collections affect your working capital.
+</p>
+</div>
 
-        <div class="card">
-            <div class="icon">🔮</div>
-            <h3>Business Forecasting</h3>
-            <p>
-                Look ahead with forecasts that help
-                you prepare for what's next.
-            </p>
-        </div>
+<div class="feature">
+<div class="feature-icon">💳</div>
+<h3>Expense Intelligence</h3>
+<p>
+Detect unusual spending, rising costs and
+opportunities to protect your margins.
+</p>
+</div>
 
-    </div>
+<div class="feature">
+<div class="feature-icon">📦</div>
+<h3>Inventory Intelligence</h3>
+<p>
+Find slow-moving inventory and understand
+where your cash is tied up.
+</p>
+</div>
+
+<div class="feature">
+<div class="feature-icon">🔮</div>
+<h3>Business Forecasting</h3>
+<p>
+Look ahead with forecasts that help you
+prepare for opportunities and risks.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- INTELLIGENCE -->
+
+<section class="intelligence" id="intelligence">
+
+<div class="container intelligence-grid">
+
+<div>
+
+<div class="section-heading">
+
+<div class="eyebrow">From data to decisions</div>
+
+<h2>
+Don't just see the numbers. Understand them.
+</h2>
+
+<p>
+Traditional accounting software tells you what happened.
+Caurivo is designed to help explain why it happened,
+what could happen next and what you should do.
+</p>
+
+</div>
+
+<div class="intelligence-list">
+
+<div class="intel-item">
+<div class="intel-number">01</div>
+<div>
+<h3>What is happening?</h3>
+<p>Turn financial data into simple explanations.</p>
+</div>
+</div>
+
+<div class="intel-item">
+<div class="intel-number">02</div>
+<div>
+<h3>What could happen next?</h3>
+<p>Forecast cash, profit and business risks.</p>
+</div>
+</div>
+
+<div class="intel-item">
+<div class="intel-number">03</div>
+<div>
+<h3>What should I do?</h3>
+<p>Get practical recommendations based on your numbers.</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="chart-card">
+
+<div class="chart-header">
+<strong>Cash Flow Forecast</strong>
+<span>Next 8 weeks</span>
+</div>
+
+<div class="chart">
+
+<div class="bar" style="height:45%"></div>
+<div class="bar" style="height:55%"></div>
+<div class="bar" style="height:62%"></div>
+<div class="bar" style="height:70%"></div>
+<div class="bar" style="height:58%"></div>
+<div class="bar" style="height:48%"></div>
+<div class="bar" style="height:39%"></div>
+<div class="bar" style="height:50%"></div>
+
+</div>
+
+<div class="chart-note">
+
+<strong>AI insight</strong>
+
+<p>
+Cash could tighten around week 6.
+Consider accelerating ₹1.2L of receivables.
+</p>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
-<section class="workflow">
+<!-- WORKFLOW -->
 
-    <div class="heading">
+<section class="workflow" id="how">
 
-        <h2>
-            Understand.<br>
-            Predict. Act.
-        </h2>
+<div class="container">
 
-        <p>
-            Caurivo turns complicated financial information
-            into practical business decisions.
-        </p>
+<div class="section-heading">
 
-    </div>
+<div class="eyebrow">How Caurivo works</div>
 
-    <div class="steps">
+<h2>
+Understand. Predict. Act.
+</h2>
 
-        <div class="step">
-            <small>01</small>
-            <h3>Connect</h3>
-            <p>
-                Bring your business financial data together.
-            </p>
-        </div>
+<p>
+Caurivo is designed to become the financial intelligence
+layer between your business data and your decisions.
+</p>
 
-        <div class="step">
-            <small>02</small>
-            <h3>Understand</h3>
-            <p>
-                Caurivo analyzes what is happening.
-            </p>
-        </div>
+</div>
 
-        <div class="step">
-            <small>03</small>
-            <h3>Predict</h3>
-            <p>
-                Identify risks and future outcomes.
-            </p>
-        </div>
+<div class="steps">
 
-        <div class="step">
-            <small>04</small>
-            <h3>Act</h3>
-            <p>
-                Get clear recommendations for what to do next.
-            </p>
-        </div>
+<div class="step">
+<div class="step-number">01 / CONNECT</div>
+<h3>Bring your data together.</h3>
+<p>
+Connect the financial information your business
+already generates.
+</p>
+</div>
 
-    </div>
+<div class="step">
+<div class="step-number">02 / UNDERSTAND</div>
+<h3>See what is happening.</h3>
+<p>
+Caurivo analyzes the numbers and explains
+the important changes.
+</p>
+</div>
+
+<div class="step">
+<div class="step-number">03 / PREDICT</div>
+<h3>Look ahead.</h3>
+<p>
+Identify potential cash-flow problems,
+risks and opportunities before they arrive.
+</p>
+</div>
+
+<div class="step">
+<div class="step-number">04 / ACT</div>
+<h3>Know what to do next.</h3>
+<p>
+Receive clear recommendations designed
+around your business situation.
+</p>
+</div>
+
+</div>
+
+</div>
 
 </section>
+
+<!-- POSITIONING -->
+
+<section class="position">
+
+<div class="container">
+
+<div class="position-box">
+
+<div class="eyebrow">The Caurivo idea</div>
+
+<h2>
+Accounting tells you what happened.
+Caurivo helps you understand what happens next.
+</h2>
+
+<p>
+We're building Caurivo to give growing businesses
+the kind of financial intelligence and decision support
+that normally requires a finance team.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
 
 <section class="cta" id="early-access">
 
-    <h2>
-        Your business.<br>
-        Understood.
-    </h2>
+<div class="container">
 
-    <p>
-        Caurivo is being built for business owners
-        who want more than accounting reports.
-    </p>
+<h2>
+Build your business.<br>
+We'll help you understand it.
+</h2>
 
-    <a href="mailto:hello@caurivo.com">
-        Join Early Access
-    </a>
+<p>
+Caurivo is being built for ambitious business owners
+who want clearer finances, earlier warnings and smarter decisions.
+</p>
+
+<a href="mailto:hello@caurivo.com" class="btn">
+Join Caurivo Early Access →
+</a>
+
+</div>
 
 </section>
 
+</main>
+
 <footer>
-    © 2026 Caurivo. All rights reserved.
+
+<div class="container footer-inner">
+
+<div class="footer-logo">
+CAURIVO
+</div>
+
+<p>
+© 2026 Caurivo. AI-powered financial intelligence for growing businesses.
+</p>
+
+</div>
+
 </footer>
 
 </body>
