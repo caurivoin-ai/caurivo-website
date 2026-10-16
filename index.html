@@ -1075,6 +1075,151 @@ function calculateCaurivoHealth() {
 
     result.style.display = "block";
 }
+function generateCaurivoAIAdvice() {
+
+    const revenue =
+        Number(document.getElementById("caurivoAIRevenue").value);
+
+    const profit =
+        Number(document.getElementById("caurivoAIProfit").value);
+
+    const cash =
+        Number(document.getElementById("caurivoAICash").value);
+
+    const receivables =
+        Number(document.getElementById("caurivoAIReceivables").value);
+
+    const overdue =
+        Number(document.getElementById("caurivoAIOverdue").value);
+
+    const expenses =
+        Number(document.getElementById("caurivoAIExpenses").value);
+
+    const result =
+        document.getElementById("caurivoAIResult");
+
+    const priority =
+        document.getElementById("caurivoAIPriority");
+
+    const why =
+        document.getElementById("caurivoAIWhy");
+
+    const action =
+        document.getElementById("caurivoAIAction");
+
+    if (
+        revenue <= 0 ||
+        profit < 0 ||
+        cash < 0 ||
+        receivables < 0 ||
+        overdue < 0 ||
+        expenses < 0
+    ) {
+        alert("Please enter valid business numbers.");
+        return;
+    }
+
+    const profitMargin =
+        (profit / revenue) * 100;
+
+    const cashCoverage =
+        expenses > 0
+            ? cash / expenses
+            : 0;
+
+    const overdueRate =
+        receivables > 0
+            ? (overdue / receivables) * 100
+            : 0;
+
+    const expenseRatio =
+        (expenses / revenue) * 100;
+
+
+    /*
+     * CAURIVO PRIORITY ENGINE
+     *
+     * The prototype looks for the
+     * weakest financial signal.
+     */
+
+
+    if (overdueRate >= 30) {
+
+        priority.textContent =
+            "🔴 Receivables need immediate attention";
+
+        why.textContent =
+            "A significant portion of your outstanding customer payments " +
+            "is overdue. This can create cash-flow pressure even when the " +
+            "business is profitable.";
+
+        action.textContent =
+            "Prioritize collection from overdue customers, starting with " +
+            "the oldest and largest invoices. Review payment terms and " +
+            "follow up on delayed accounts.";
+
+    } else if (cashCoverage < 0.5) {
+
+        priority.textContent =
+            "🔴 Cash flow needs immediate attention";
+
+        why.textContent =
+            "Your available cash covers less than half of one month's " +
+            "current expenses. A delay in customer collections could " +
+            "increase short-term cash pressure.";
+
+        action.textContent =
+            "Protect your cash buffer. Accelerate customer collections, " +
+            "review upcoming payments and delay non-essential spending " +
+            "where appropriate.";
+
+    } else if (profitMargin < 10) {
+
+        priority.textContent =
+            "🟡 Profitability needs attention";
+
+        why.textContent =
+            "Your current profit margin is relatively low. Small increases " +
+            "in expenses or decreases in revenue could significantly affect " +
+            "profitability.";
+
+        action.textContent =
+            "Review your largest expenses, pricing and gross margins. " +
+            "Look for ways to improve contribution from your most important " +
+            "products or services.";
+
+    } else if (expenseRatio > 80) {
+
+        priority.textContent =
+            "🟡 Expense control needs attention";
+
+        why.textContent =
+            "A large proportion of revenue is currently being consumed by " +
+            "expenses, leaving less room for profit and unexpected costs.";
+
+        action.textContent =
+            "Review your largest recurring expenses and identify costs " +
+            "that can be reduced, renegotiated or made more efficient.";
+
+    } else {
+
+        priority.textContent =
+            "🟢 Business position looks healthy";
+
+        why.textContent =
+            "Your current inputs show a reasonable combination of " +
+            "profitability, cash availability, receivables and expenses.";
+
+        action.textContent =
+            "Continue monitoring these indicators monthly. Focus on " +
+            "maintaining healthy cash reserves, collecting receivables " +
+            "on time and protecting your profit margin.";
+
+    }
+
+    result.style.display = "block";
+}
 </script>
 <body>
 
@@ -2230,6 +2375,163 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO BUSINESS HEALTH SCORE -->
+   <!-- CAURIVO AI CFO -->
+
+<section id="ai-cfo" style="padding:64px 0;background:#f8faff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO AI CFO
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Turn financial numbers into decisions.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter your key business numbers and get a simple financial priority
+      and recommended action.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="caurivoAIRevenue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Revenue (₹)
+          </label>
+
+          <input
+            id="caurivoAIRevenue"
+            type="number"
+            min="0"
+            placeholder="Example: 500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoAIProfit"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Profit (₹)
+          </label>
+
+          <input
+            id="caurivoAIProfit"
+            type="number"
+            placeholder="Example: 120000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoAICash"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Available Cash (₹)
+          </label>
+
+          <input
+            id="caurivoAICash"
+            type="number"
+            min="0"
+            placeholder="Example: 220000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoAIReceivables"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Total Receivables (₹)
+          </label>
+
+          <input
+            id="caurivoAIReceivables"
+            type="number"
+            min="0"
+            placeholder="Example: 500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoAIOverdue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Overdue Receivables (₹)
+          </label>
+
+          <input
+            id="caurivoAIOverdue"
+            type="number"
+            min="0"
+            placeholder="Example: 100000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoAIExpenses"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Expenses (₹)
+          </label>
+
+          <input
+            id="caurivoAIExpenses"
+            type="number"
+            min="0"
+            placeholder="Example: 380000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="generateCaurivoAIAdvice()"
+        style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+        Ask Caurivo
+      </button>
+
+      <div
+        id="caurivoAIResult"
+        style="display:none;margin-top:28px;">
+
+        <div style="padding:26px;background:#f8faff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <p style="color:#315efb;font-weight:700;">
+            CAURIVO'S FINANCIAL PRIORITY
+          </p>
+
+          <h3 id="caurivoAIPriority"
+              style="font-size:26px;margin-top:8px;">
+          </h3>
+
+          <p id="caurivoAIWhy"
+             style="color:#475467;margin-top:12px;line-height:1.8;">
+          </p>
+
+          <div style="margin-top:22px;padding:20px;background:#fff;border-radius:14px;">
+
+            <h3>Recommended action</h3>
+
+            <p id="caurivoAIAction"
+               style="color:#475467;margin-top:8px;line-height:1.8;">
+            </p>
+
+          </div>
+
+          <p style="color:#667085;font-size:13px;margin-top:16px;">
+            Prototype recommendation only. This is not financial,
+            accounting, tax or investment advice.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO AI CFO -->
     <!-- FINAL CTA -->
 
 <section class="cta">
