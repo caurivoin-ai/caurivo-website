@@ -1220,6 +1220,282 @@ function generateCaurivoAIAdvice() {
 
     result.style.display = "block";
 }
+function runCaurivoDashboard() {
+
+    const revenue =
+        Number(document.getElementById("dashboardRevenue").value);
+
+    const profit =
+        Number(document.getElementById("dashboardProfit").value);
+
+    const cash =
+        Number(document.getElementById("dashboardCash").value);
+
+    const receivables =
+        Number(document.getElementById("dashboardReceivables").value);
+
+    const overdue =
+        Number(document.getElementById("dashboardOverdue").value);
+
+    const expenses =
+        Number(document.getElementById("dashboardExpenses").value);
+
+
+    if (
+        revenue <= 0 ||
+        profit < 0 ||
+        cash < 0 ||
+        receivables < 0 ||
+        overdue < 0 ||
+        expenses < 0
+    ) {
+        alert("Please enter valid business numbers. Revenue must be greater than zero.");
+        return;
+    }
+
+
+    /* KEY METRICS */
+
+    const profitMargin =
+        (profit / revenue) * 100;
+
+    const expenseRatio =
+        (expenses / revenue) * 100;
+
+    const overdueRate =
+        receivables > 0
+            ? (overdue / receivables) * 100
+            : 0;
+
+    const cashCoverage =
+        expenses > 0
+            ? cash / expenses
+            : 0;
+
+
+    /* PROFITABILITY SCORE */
+
+    let profitScore;
+
+    if (profitMargin >= 25) {
+        profitScore = 100;
+    } else if (profitMargin >= 20) {
+        profitScore = 90;
+    } else if (profitMargin >= 15) {
+        profitScore = 80;
+    } else if (profitMargin >= 10) {
+        profitScore = 70;
+    } else if (profitMargin >= 5) {
+        profitScore = 55;
+    } else {
+        profitScore = 35;
+    }
+
+
+    /* CASH SCORE */
+
+    let cashScore;
+
+    if (cashCoverage >= 1) {
+        cashScore = 100;
+    } else if (cashCoverage >= 0.75) {
+        cashScore = 90;
+    } else if (cashCoverage >= 0.5) {
+        cashScore = 75;
+    } else if (cashCoverage >= 0.25) {
+        cashScore = 55;
+    } else {
+        cashScore = 35;
+    }
+
+
+    /* RECEIVABLES SCORE */
+
+    let receivablesScore;
+
+    if (overdueRate <= 10) {
+        receivablesScore = 100;
+    } else if (overdueRate <= 20) {
+        receivablesScore = 85;
+    } else if (overdueRate <= 30) {
+        receivablesScore = 70;
+    } else if (overdueRate <= 40) {
+        receivablesScore = 55;
+    } else {
+        receivablesScore = 35;
+    }
+
+
+    /* EXPENSE SCORE */
+
+    let expenseScore;
+
+    if (expenseRatio <= 60) {
+        expenseScore = 100;
+    } else if (expenseRatio <= 70) {
+        expenseScore = 90;
+    } else if (expenseRatio <= 80) {
+        expenseScore = 75;
+    } else if (expenseRatio <= 90) {
+        expenseScore = 55;
+    } else {
+        expenseScore = 35;
+    }
+
+
+    /* OVERALL HEALTH */
+
+    const healthScore =
+        Math.round(
+            (profitScore +
+             cashScore +
+             receivablesScore +
+             expenseScore) / 4
+        );
+
+
+    /* DISPLAY METRICS */
+
+    document.getElementById("dashboardHealthScore").textContent =
+        healthScore + "/100";
+
+    document.getElementById("dashboardProfitMargin").textContent =
+        profitMargin.toFixed(1) + "%";
+
+    document.getElementById("dashboardCashPosition").textContent =
+        "₹" + Math.round(cash).toLocaleString("en-IN");
+
+    document.getElementById("dashboardReceivablesRate").textContent =
+        overdueRate.toFixed(1) + "% overdue";
+
+    document.getElementById("dashboardExpenseRatio").textContent =
+        expenseRatio.toFixed(1) + "%";
+
+
+    /* HEALTH STATUS */
+
+    const healthStatus =
+        document.getElementById("dashboardHealthStatus");
+
+    if (healthScore >= 80) {
+
+        healthStatus.textContent =
+            "🟢 Strong business health";
+
+    } else if (healthScore >= 60) {
+
+        healthStatus.textContent =
+            "🟡 Business health needs attention";
+
+    } else {
+
+        healthStatus.textContent =
+            "🔴 Business health requires attention";
+    }
+
+
+    /* FIND WEAKEST AREA */
+
+    const scores = [
+        {
+            name: "Profitability",
+            score: profitScore
+        },
+        {
+            name: "Cash Flow",
+            score: cashScore
+        },
+        {
+            name: "Receivables",
+            score: receivablesScore
+        },
+        {
+            name: "Expense Control",
+            score: expenseScore
+        }
+    ];
+
+    const weakest =
+        scores.reduce(
+            (lowest, item) =>
+                item.score < lowest.score ? item : lowest,
+            scores[0]
+        );
+
+
+    /* CFO RECOMMENDATION */
+
+    const priority =
+        document.getElementById("dashboardPriority");
+
+    const why =
+        document.getElementById("dashboardWhy");
+
+    const action =
+        document.getElementById("dashboardAction");
+
+
+    if (weakest.name === "Receivables") {
+
+        priority.textContent =
+            "🔴 Receivables need attention";
+
+        why.textContent =
+            overdueRate.toFixed(1) +
+            "% of your outstanding receivables are overdue. " +
+            "Delayed collections can put pressure on cash flow.";
+
+        action.textContent =
+            "Prioritize collection from older and larger overdue invoices. " +
+            "Review customer payment terms and follow up on delayed accounts.";
+
+    } else if (weakest.name === "Cash Flow") {
+
+        priority.textContent =
+            "🔴 Cash flow needs attention";
+
+        why.textContent =
+            "Your available cash currently covers about " +
+            cashCoverage.toFixed(1) +
+            " months of your current expense level.";
+
+        action.textContent =
+            "Protect your cash buffer. Accelerate collections, " +
+            "review upcoming payments and avoid unnecessary spending.";
+
+    } else if (weakest.name === "Profitability") {
+
+        priority.textContent =
+            "🟡 Profitability needs attention";
+
+        why.textContent =
+            "Your current profit margin is " +
+            profitMargin.toFixed(1) +
+            "%. Improving margins can strengthen the business.";
+
+        action.textContent =
+            "Review pricing, gross margins and major expenses. " +
+            "Focus on improving profit from your most important products or services.";
+
+    } else {
+
+        priority.textContent =
+            "🟡 Expense control needs attention";
+
+        why.textContent =
+            "Your expenses currently consume " +
+            expenseRatio.toFixed(1) +
+            "% of revenue.";
+
+        action.textContent =
+            "Review your largest recurring expenses and identify " +
+            "opportunities to reduce or improve spending efficiency.";
+    }
+
+
+    document.getElementById("caurivoDashboardResult").style.display =
+        "block";
+}
 </script>
 <body>
 
@@ -2532,6 +2808,74 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO AI CFO -->
+    <!-- CAURIVO CFO DASHBOARD -->
+
+<section id="cfo-dashboard" style="padding:64px 0;background:#f8faff;">
+  <div style="width:min(1100px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO AI CFO
+    </p>
+
+    <h2 style="font-size:clamp(28px,4vw,42px);margin:10px 0;">
+      Your business, at a glance.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter your latest financial numbers to get a quick CFO-style view
+      of your business.
+    </p>
+
+    <!-- INPUTS -->
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="dashboardRevenue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Revenue (₹)
+          </label>
+
+          <input
+            id="dashboardRevenue"
+            type="number"
+            min="0"
+            placeholder="500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="dashboardProfit"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Profit (₹)
+          </label>
+
+          <input
+            id="dashboardProfit"
+            type="number"
+            min="0"
+            placeholder="120000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="dashboardCash"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Available Cash (₹)
+          </label>
+
+          <input
+            id="dashboardCash"
+            type="number"
+            min="0"
+            placeholder="220000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="dashboard
     <!-- FINAL CTA -->
 
 <section class="cta">
