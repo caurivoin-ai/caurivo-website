@@ -1496,6 +1496,35 @@ function runCaurivoDashboard() {
     document.getElementById("caurivoDashboardResult").style.display =
         "block";
 }
+function runCaurivoDashboard() {
+  const revenue = Number(document.getElementById("dashboardRevenue")?.value || 0);
+  const profit = Number(document.getElementById("dashboardProfit")?.value || 0);
+  const cash = Number(document.getElementById("dashboardCash")?.value || 0);
+
+  if (!revenue && !profit && !cash) {
+    alert("Please enter your business financial information first.");
+    return;
+  }
+
+  const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+
+  let health = "Healthy";
+  if (margin < 10 || cash < revenue * 0.1) {
+    health = "Needs Attention";
+  }
+  if (margin < 0 || cash <= 0) {
+    health = "High Risk";
+  }
+
+  alert(
+    "CAURIVO CFO DASHBOARD\n\n" +
+    "Monthly Revenue: ₹" + revenue.toLocaleString("en-IN") + "\n" +
+    "Monthly Profit: ₹" + profit.toLocaleString("en-IN") + "\n" +
+    "Available Cash: ₹" + cash.toLocaleString("en-IN") + "\n\n" +
+    "Profit Margin: " + margin.toFixed(1) + "%\n" +
+    "Financial Health: " + health
+  );
+}
 </script>
 <body>
 
