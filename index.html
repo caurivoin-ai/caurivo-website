@@ -832,6 +832,249 @@ function analyzeCaurivoExpenses() {
 
     result.style.display = "block";
 }
+function calculateCaurivoHealth() {
+
+    const revenue =
+        Number(document.getElementById("caurivoHealthRevenue").value);
+
+    const profit =
+        Number(document.getElementById("caurivoHealthProfit").value);
+
+    const cash =
+        Number(document.getElementById("caurivoHealthCash").value);
+
+    const receivables =
+        Number(document.getElementById("caurivoHealthReceivables").value);
+
+    const overdue =
+        Number(document.getElementById("caurivoHealthOverdue").value);
+
+    const expenses =
+        Number(document.getElementById("caurivoHealthExpenses").value);
+
+    const result =
+        document.getElementById("caurivoHealthResult");
+
+    const scoreDisplay =
+        document.getElementById("caurivoHealthScore");
+
+    const status =
+        document.getElementById("caurivoHealthStatus");
+
+    const message =
+        document.getElementById("caurivoHealthMessage");
+
+    const profitScoreDisplay =
+        document.getElementById("caurivoProfitScore");
+
+    const cashScoreDisplay =
+        document.getElementById("caurivoCashScore");
+
+    const receivablesScoreDisplay =
+        document.getElementById("caurivoReceivablesScore");
+
+    const expenseScoreDisplay =
+        document.getElementById("caurivoExpenseScore");
+
+    const priority =
+        document.getElementById("caurivoHealthPriority");
+
+    if (
+        revenue <= 0 ||
+        profit < 0 ||
+        cash < 0 ||
+        receivables < 0 ||
+        overdue < 0 ||
+        expenses < 0
+    ) {
+        alert("Please enter valid numbers. Revenue must be greater than zero.");
+        return;
+    }
+
+    /* PROFITABILITY SCORE */
+
+    const profitMargin =
+        (profit / revenue) * 100;
+
+    let profitScore;
+
+    if (profitMargin >= 25) {
+        profitScore = 100;
+    } else if (profitMargin >= 20) {
+        profitScore = 90;
+    } else if (profitMargin >= 15) {
+        profitScore = 80;
+    } else if (profitMargin >= 10) {
+        profitScore = 70;
+    } else if (profitMargin >= 5) {
+        profitScore = 55;
+    } else {
+        profitScore = 35;
+    }
+
+
+    /* CASH FLOW SCORE */
+
+    const cashCoverage =
+        expenses > 0 ? cash / expenses : 0;
+
+    let cashScore;
+
+    if (cashCoverage >= 1) {
+        cashScore = 100;
+    } else if (cashCoverage >= 0.75) {
+        cashScore = 90;
+    } else if (cashCoverage >= 0.5) {
+        cashScore = 75;
+    } else if (cashCoverage >= 0.25) {
+        cashScore = 55;
+    } else {
+        cashScore = 35;
+    }
+
+
+    /* RECEIVABLES SCORE */
+
+    const overdueRate =
+        receivables > 0
+            ? (overdue / receivables) * 100
+            : 0;
+
+    let receivablesScore;
+
+    if (overdueRate <= 10) {
+        receivablesScore = 100;
+    } else if (overdueRate <= 20) {
+        receivablesScore = 85;
+    } else if (overdueRate <= 30) {
+        receivablesScore = 70;
+    } else if (overdueRate <= 40) {
+        receivablesScore = 55;
+    } else {
+        receivablesScore = 35;
+    }
+
+
+    /* EXPENSE CONTROL SCORE */
+
+    const expenseRatio =
+        (expenses / revenue) * 100;
+
+    let expenseScore;
+
+    if (expenseRatio <= 60) {
+        expenseScore = 100;
+    } else if (expenseRatio <= 70) {
+        expenseScore = 90;
+    } else if (expenseRatio <= 80) {
+        expenseScore = 75;
+    } else if (expenseRatio <= 90) {
+        expenseScore = 55;
+    } else {
+        expenseScore = 35;
+    }
+
+
+    /* OVERALL SCORE */
+
+    const overallScore =
+        Math.round(
+            (profitScore +
+             cashScore +
+             receivablesScore +
+             expenseScore) / 4
+        );
+
+
+    /* DISPLAY SCORES */
+
+    scoreDisplay.textContent =
+        overallScore + "/100";
+
+    profitScoreDisplay.textContent =
+        profitScore + "/100";
+
+    cashScoreDisplay.textContent =
+        cashScore + "/100";
+
+    receivablesScoreDisplay.textContent =
+        receivablesScore + "/100";
+
+    expenseScoreDisplay.textContent =
+        expenseScore + "/100";
+
+
+    /* FIND PRIORITY */
+
+    const scores = [
+        {
+            name: "profitability",
+            score: profitScore
+        },
+        {
+            name: "cash flow",
+            score: cashScore
+        },
+        {
+            name: "receivables",
+            score: receivablesScore
+        },
+        {
+            name: "expense control",
+            score: expenseScore
+        }
+    ];
+
+    const weakest =
+        scores.reduce(
+            (lowest, item) =>
+                item.score < lowest.score ? item : lowest,
+            scores[0]
+        );
+
+
+    /* HEALTH STATUS */
+
+    if (overallScore >= 80) {
+
+        status.textContent =
+            "🟢 Strong business health";
+
+        message.textContent =
+            "Your business shows a relatively healthy position across " +
+            "profitability, cash flow, receivables and expense control.";
+
+    } else if (overallScore >= 60) {
+
+        status.textContent =
+            "🟡 Business health needs attention";
+
+        message.textContent =
+            "Your business appears reasonably stable, but one or more " +
+            "financial areas deserve closer monitoring.";
+
+    } else {
+
+        status.textContent =
+            "🔴 Business health requires attention";
+
+        message.textContent =
+            "Several financial indicators may require attention. " +
+            "Review the weakest areas before making major spending decisions.";
+
+    }
+
+
+    priority.textContent =
+        "Your current weakest area is " +
+        weakest.name +
+        " with a score of " +
+        weakest.score +
+        "/100. Focus on improving this area first.";
+
+
+    result.style.display = "block";
+}
 </script>
 <body>
 
@@ -1801,6 +2044,192 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO EXPENSE INTELLIGENCE -->
+   <!-- CAURIVO BUSINESS HEALTH SCORE -->
+
+<section id="business-health" style="padding:64px 0;background:#ffffff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO BUSINESS HEALTH
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Get a quick view of your business health.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Enter a few key numbers and Caurivo will estimate your overall financial health.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="caurivoHealthRevenue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Revenue (₹)
+          </label>
+
+          <input
+            id="caurivoHealthRevenue"
+            type="number"
+            min="0"
+            placeholder="Example: 500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoHealthProfit"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Profit (₹)
+          </label>
+
+          <input
+            id="caurivoHealthProfit"
+            type="number"
+            placeholder="Example: 120000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoHealthCash"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Available Cash (₹)
+          </label>
+
+          <input
+            id="caurivoHealthCash"
+            type="number"
+            min="0"
+            placeholder="Example: 220000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoHealthReceivables"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Total Receivables (₹)
+          </label>
+
+          <input
+            id="caurivoHealthReceivables"
+            type="number"
+            min="0"
+            placeholder="Example: 500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoHealthOverdue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Overdue Receivables (₹)
+          </label>
+
+          <input
+            id="caurivoHealthOverdue"
+            type="number"
+            min="0"
+            placeholder="Example: 100000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoHealthExpenses"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Monthly Expenses (₹)
+          </label>
+
+          <input
+            id="caurivoHealthExpenses"
+            type="number"
+            min="0"
+            placeholder="Example: 380000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="calculateCaurivoHealth()"
+        style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+        Check My Business Health
+      </button>
+
+      <div
+        id="caurivoHealthResult"
+        style="display:none;margin-top:28px;">
+
+        <div style="text-align:center;padding:26px;background:#f8faff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <p style="color:#667085;font-weight:600;">
+            CAURIVO BUSINESS HEALTH SCORE
+          </p>
+
+          <div
+            id="caurivoHealthScore"
+            style="font-size:52px;font-weight:800;margin:8px 0;">
+            0/100
+          </div>
+
+          <h3 id="caurivoHealthStatus">
+          </h3>
+
+          <p id="caurivoHealthMessage"
+             style="color:#475467;margin-top:10px;line-height:1.7;">
+          </p>
+
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:18px;">
+
+          <div style="background:#f8faff;padding:20px;border-radius:14px;">
+            <p style="color:#667085;">Profitability</p>
+            <h3 id="caurivoProfitScore">0/100</h3>
+          </div>
+
+          <div style="background:#f8faff;padding:20px;border-radius:14px;">
+            <p style="color:#667085;">Cash Flow</p>
+            <h3 id="caurivoCashScore">0/100</h3>
+          </div>
+
+          <div style="background:#f8faff;padding:20px;border-radius:14px;">
+            <p style="color:#667085;">Receivables</p>
+            <h3 id="caurivoReceivablesScore">0/100</h3>
+          </div>
+
+          <div style="background:#f8faff;padding:20px;border-radius:14px;">
+            <p style="color:#667085;">Expense Control</p>
+            <h3 id="caurivoExpenseScore">0/100</h3>
+          </div>
+
+        </div>
+
+        <div style="margin-top:18px;padding:22px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <h3> Caurivo's Priority</h3>
+
+          <p id="caurivoHealthPriority"
+             style="color:#475467;margin-top:10px;line-height:1.7;">
+          </p>
+
+          <p style="color:#667085;font-size:13px;margin-top:14px;">
+            This is a simplified prototype score for demonstration purposes.
+            It is not a credit score, investment recommendation, accounting
+            opinion or financial advice.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO BUSINESS HEALTH SCORE -->
     <!-- FINAL CTA -->
 
 <section class="cta">
