@@ -634,6 +634,85 @@ function calculateCaurivoCashFlow() {
 
     result.style.display = "block";
 }
+function analyzeCaurivoReceivables() {
+
+    const receivables =
+        Number(document.getElementById("caurivoReceivables").value);
+
+    const due7 =
+        Number(document.getElementById("caurivoDue7").value);
+
+    const overdue =
+        Number(document.getElementById("caurivoOverdue").value);
+
+    const overdue30 =
+        Number(document.getElementById("caurivoOverdue30").value);
+
+    const result =
+        document.getElementById("caurivoReceivablesResult");
+
+    const overduePercentage =
+        document.getElementById("caurivoOverduePercentage");
+
+    const overdue30Result =
+        document.getElementById("caurivoOverdue30Result");
+
+    const status =
+        document.getElementById("caurivoReceivablesStatus");
+
+    const message =
+        document.getElementById("caurivoReceivablesMessage");
+
+    if (receivables <= 0) {
+        alert("Please enter a valid total outstanding receivables amount.");
+        return;
+    }
+
+    if (due7 < 0 || overdue < 0 || overdue30 < 0) {
+        alert("Please enter valid positive numbers.");
+        return;
+    }
+
+    const overdueRate =
+        (overdue / receivables) * 100;
+
+    overduePercentage.textContent =
+        overdueRate.toFixed(1) + "%";
+
+    overdue30Result.textContent =
+        "₹" + Math.round(overdue30).toLocaleString("en-IN");
+
+    if (overdueRate >= 40 || overdue30 >= receivables * 0.25) {
+
+        status.textContent =
+            "🔴 High receivables risk";
+
+        message.textContent =
+            "A significant portion of your outstanding money is overdue. " +
+            "Prioritize collection from the oldest and largest overdue accounts.";
+
+    } else if (overdueRate >= 20 || overdue30 > 0) {
+
+        status.textContent =
+            "🟡 Receivables need attention";
+
+        message.textContent =
+            "Some customer payments are creating collection pressure. " +
+            "Monitor overdue invoices closely and follow up before delays increase.";
+
+    } else {
+
+        status.textContent =
+            "🟢 Receivables position looks healthy";
+
+        message.textContent =
+            "Most of your outstanding receivables are currently within a lower-risk range. " +
+            "Continue monitoring payment dates and customer collection patterns.";
+
+    }
+
+    result.style.display = "block";
+}
 </script>
 <body>
 
@@ -1303,6 +1382,142 @@ accessible and actionable.
 </section>
 
 <!-- END CAURIVO CASH-FLOW INTELLIGENCE -->
+    <!-- CAURIVO RECEIVABLES INTELLIGENCE -->
+
+<section id="receivables-intelligence" style="padding:64px 0;background:#ffffff;">
+  <div style="width:min(1000px,92%);margin:auto;">
+
+    <p style="color:#315efb;font-weight:700;letter-spacing:1px;">
+      CAURIVO RECEIVABLES INTELLIGENCE
+    </p>
+
+    <h2 style="font-size:clamp(26px,4vw,38px);margin:10px 0;">
+      Know where your money is stuck.
+    </h2>
+
+    <p style="color:#667085;margin-bottom:28px;">
+      Estimate collection pressure and identify potential receivables risk.
+    </p>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+
+        <div>
+          <label for="caurivoReceivables"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Total Outstanding Receivables (₹)
+          </label>
+
+          <input
+            id="caurivoReceivables"
+            type="number"
+            min="0"
+            placeholder="Example: 500000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoDue7"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Due Within 7 Days (₹)
+          </label>
+
+          <input
+            id="caurivoDue7"
+            type="number"
+            min="0"
+            placeholder="Example: 100000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoOverdue"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Total Overdue (₹)
+          </label>
+
+          <input
+            id="caurivoOverdue"
+            type="number"
+            min="0"
+            placeholder="Example: 200000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+        <div>
+          <label for="caurivoOverdue30"
+                 style="display:block;font-weight:700;margin-bottom:8px;">
+            Overdue 30+ Days (₹)
+          </label>
+
+          <input
+            id="caurivoOverdue30"
+            type="number"
+            min="0"
+            placeholder="Example: 120000"
+            style="width:100%;padding:14px;border:1px solid #d0d5dd;border-radius:10px;font-size:16px;">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="analyzeCaurivoReceivables()"
+        style="margin-top:22px;background:#315efb;color:#fff;border:0;padding:14px 22px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">
+        Analyze My Receivables
+      </button>
+
+      <div
+        id="caurivoReceivablesResult"
+        style="display:none;margin-top:28px;">
+
+        <div style="padding:24px;background:#f8faff;border:1px solid #e2e8f0;border-radius:16px;">
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+
+            <div style="background:#fff;padding:18px;border-radius:12px;">
+              <p style="color:#667085;">Overdue Percentage</p>
+              <h3 id="caurivoOverduePercentage"
+                  style="font-size:28px;margin-top:6px;">
+                0%
+              </h3>
+            </div>
+
+            <div style="background:#fff;padding:18px;border-radius:12px;">
+              <p style="color:#667085;">30+ Day Overdue</p>
+              <h3 id="caurivoOverdue30Result"
+                  style="font-size:28px;margin-top:6px;">
+                ₹0
+              </h3>
+            </div>
+
+          </div>
+
+          <h3 id="caurivoReceivablesStatus"
+              style="margin-top:22px;">
+          </h3>
+
+          <p id="caurivoReceivablesMessage"
+             style="color:#475467;margin-top:10px;line-height:1.7;">
+          </p>
+
+          <p style="color:#667085;font-size:13px;margin-top:14px;">
+            Simplified demonstration only. Actual receivables analysis
+            should consider invoice age, customer payment history,
+            credit terms and expected collection dates.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- END CAURIVO RECEIVABLES INTELLIGENCE -->
     <!-- FINAL CTA -->
 
 <section class="cta">
