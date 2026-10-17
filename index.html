@@ -246,7 +246,8 @@ document.addEventListener("submit", function(event){
     return;
   }
   }
-
+console.log("CAURIVO login script started");
+console.log("Supabase library loaded:", Boolean(window.supabase));
   const client = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
