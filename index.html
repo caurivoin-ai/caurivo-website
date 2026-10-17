@@ -141,7 +141,21 @@ if(save)save.onclick=()=>document.getElementById("message").textContent="Demo se
 if(name==="Dashboard")chart();
 if(document.getElementById("demoForm") && typeof caurivoRenderSavedEntries==="function") caurivoRenderSavedEntries();
 }
-document.getElementById("action").onclick=()=>show(current==="Dashboard"?"Reports":current);
+document.getElementById("action").onclick=()=>{
+  if(current==="Dashboard"){
+    show("Reports");
+    return;
+  }
+  if(["Invoices","Expenses","Budget","Customers"].includes(current)){
+    show(current);
+    const firstInput=document.querySelector("#demoForm input");
+    if(firstInput) firstInput.focus();
+    return;
+  }
+  show("Expenses");
+  const firstInput=document.querySelector("#demoForm input");
+  if(firstInput) firstInput.focus();
+};
 window.addEventListener("resize",()=>{if(current==="Dashboard")chart()});
 show("Dashboard");
 
@@ -158,7 +172,7 @@ function caurivoRenderSavedEntries(){
   const message = document.getElementById("message");
   const form = document.getElementById("demoForm");
   if (!message || !form) return;
-  const titleNode = form.querySelector("h2");
+  const titleNode = form.closest(".card") ? form.closest(".card").querySelector("h2") : null;
   const title = titleNode ? titleNode.textContent : "Demo entries";
   const entries = caurivoReadEntries().filter(entry => entry.type === title);
   const wrap = document.createElement("div");
@@ -195,7 +209,7 @@ document.addEventListener("submit", function(event){
   const form = event.target;
   if (!form || form.id !== "demoForm") return;
   try {
-    const titleNode = form.querySelector("h2");
+    const titleNode = form.closest(".card") ? form.closest(".card").querySelector("h2") : null;
     const labels = Array.from(form.querySelectorAll("label"));
     const inputs = Array.from(form.querySelectorAll("input, select"));
     const fields = inputs.map((input, index) => ({
