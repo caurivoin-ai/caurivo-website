@@ -413,6 +413,145 @@ console.log("Supabase library loaded:", Boolean(window.supabase));
 })();
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  const SUPABASE_URL =
+    "https://ugcmnmbjcfxjwtrusksj.supabase.co";
+
+  const SUPABASE_KEY =
+    "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+  const panel = document.createElement("section");
+  panel.id = "caurivo-auth";
+  panel.style.cssText =
+    "max-width:430px;margin:24px auto;padding:22px;" +
+    "border:1px solid #273b59;border-radius:18px;" +
+    "background:#101827;color:#e8f1ff;font-family:Arial,sans-serif;";
+
+  panel.innerHTML = `
+    <h2 style="color:#67d8ff">CAURIVO</h2>
+    <p>Your AI CFO for Modern Businesses</p>
+    <label for="caurivo-email">Email address</label>
+    <input id="caurivo-email" type="email"
+      autocomplete="email" placeholder="you@example.com"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:10px 0">
+    <label for="caurivo-password">Password</label>
+    <input id="caurivo-password" type="password"
+      autocomplete="current-password" placeholder="At least 8 characters"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:10px 0">
+    <button id="caurivo-signup">Create account</button>
+    <button id="caurivo-login">Log in</button>
+    <button id="caurivo-logout" hidden>Log out</button>
+    <p id="caurivo-status" role="status" aria-live="polite">
+      Loading login…
+    </p>
+  `;
+
+  document.body.insertBefore(panel, document.body.firstChild);
+
+  const email = document.getElementById("caurivo-email");
+  const password = document.getElementById("caurivo-password");
+  const status = document.getElementById("caurivo-status");
+  const signup = document.getElementById("caurivo-signup");
+  const login = document.getElementById("caurivo-login");
+  const logout = document.getElementById("caurivo-logout");
+
+  if (!window.supabase) {
+    status.textContent = "Login library failed to load. Refresh and try again.";
+    return;
+  }
+
+  if (SUPABASE_KEY === sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH) {
+    status.textContent = "Add your Supabase publishable key in the code.";
+    return;
+  }
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL, SUPABASE_KEY
+  );
+
+  async function authenticate(action) {
+    const e = email.value.trim();
+    const p = password.value;
+
+    if (!email.validity.valid || !e) {
+      status.textContent = "Enter a valid email address.";
+      return;
+    }
+    if (p.length < 8) {
+      status.textContent = "Password must be at least 8 characters.";
+      return;
+    }
+
+    signup.disabled = true;
+    login.disabled = true;
+    status.textContent = "Please wait…";
+
+    try {
+      let result;
+
+      if (action === "signup") {
+        result = await client.auth.signUp({
+          email: e,
+          password: p,
+          options: {
+            emailRedirectTo:
+              "https://caurivoin-ai.github.io/caurivo-website/"
+          }
+        });
+      } else {
+        result = await client.auth.signInWithPassword({
+          email: e, password: p
+        });
+      }
+
+      if (result.error) throw result.error;
+
+      status.textContent = action === "signup"
+        ? (result.data.session
+          ? "Account created. You are signed in."
+          : "Check your email to verify your account, then log in.")
+        : "Login successful.";
+    } catch (error) {
+      status.textContent = error.message || "Login failed. Try again.";
+    } finally {
+      signup.disabled = false;
+      login.disabled = false;
+    }
+  }
+
+  signup.addEventListener("click", () => authenticate("signup"));
+  login.addEventListener("click", () => authenticate("login"));
+
+  logout.addEventListener("click", async () => {
+    const { error } = await client.auth.signOut();
+    status.textContent = error
+      ? error.message : "You have logged out.";
+  });
+
+  client.auth.onAuthStateChange((_event, session) => {
+    const signedIn = Boolean(session && session.user);
+    signup.hidden = signedIn;
+    login.hidden = signedIn;
+    logout.hidden = !signedIn;
+    email.disabled = signedIn;
+    password.disabled = signedIn;
+
+    if (signedIn) {
+      status.textContent = "Signed in as " + session.user.email;
+    }
+  });
+
+  client.auth.getSession().then(({ data, error }) => {
+    if (error) status.textContent = error.message;
+    else if (!data.session) {
+      status.textContent = "Create an account or log in to continue.";
+    }
+  });
+})();
+</script>
+  
 
 </body>
 </html>
