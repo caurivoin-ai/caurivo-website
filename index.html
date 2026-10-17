@@ -231,5 +231,185 @@ document.addEventListener("submit", function(event){
 }, true);
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  const SUPABASE_URL =
+    "https://ugcmnmbjcfxjwtrusksj.supabase.co";
+  const SUPABASE_KEY =
+    sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH;
+
+  if (SUPABASE_KEY === sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH) {
+    console.error(sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH);
+    return;
+  }
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const style = document.createElement("style");
+  style.textContent = `
+    #caurivo-auth {
+      max-width: 430px;
+      margin: 24px auto;
+      padding: 22px;
+      border: 1px solid #273b59;
+      border-radius: 18px;
+      background: #101827;
+      color: #e8f1ff;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 12px 35px #0005;
+    }
+    #caurivo-auth h2 {
+      margin: 0 0 8px;
+      color: #67d8ff;
+    }
+    #caurivo-auth p { color: #b8c7dc; }
+    #caurivo-auth input {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: 1px solid #344967;
+      border-radius: 9px;
+      background: #0b1220;
+      color: white;
+      font-size: 16px;
+    }
+    #caurivo-auth button {
+      margin: 6px 5px 6px 0;
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 9px;
+      background: #2479e8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #caurivo-auth button:disabled { opacity: .5; }
+    #caurivo-auth #caurivo-auth-status {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+  `;
+  document.head.appendChild(style);
+
+  const panel = document.createElement("section");
+  panel.id = "caurivo-auth";
+  panel.innerHTML = `
+    <h2>CAURIVO</h2>
+    <p>Your AI CFO for Modern Businesses</p>
+    <label for="caurivo-email">Email address</label>
+    <input id="caurivo-email" type="email"
+      autocomplete="email" placeholder="you@example.com">
+    <label for="caurivo-password">Password</label>
+    <input id="caurivo-password" type="password"
+      autocomplete="current-password" minlength="8"
+      placeholder="At least 8 characters">
+    <button id="caurivo-signup">Create account</button>
+    <button id="caurivo-login">Log in</button>
+    <button id="caurivo-logout" hidden>Log out</button>
+    <p id="caurivo-auth-status" role="status"
+      aria-live="polite">Checking sign-in status…</p>
+  `;
+  document.body.insertBefore(panel, document.body.firstChild);
+
+  const email = document.getElementById("caurivo-email");
+  const password = document.getElementById("caurivo-password");
+  const status = document.getElementById("caurivo-auth-status");
+  const signup = document.getElementById("caurivo-signup");
+  const login = document.getElementById("caurivo-login");
+  const logout = document.getElementById("caurivo-logout");
+
+  function showStatus(message) {
+    status.textContent = message;
+  }
+
+  async function runAuth(action) {
+    const e = email.value.trim();
+    const p = password.value;
+
+    if (!e || !email.validity.valid) {
+      showStatus("Please enter a valid email address.");
+      return;
+    }
+    if (p.length < 8) {
+      showStatus("Please enter a password with at least 8 characters.");
+      return;
+    }
+
+    signup.disabled = true;
+    login.disabled = true;
+    showStatus("Please wait…");
+
+    try {
+      if (action === "signup") {
+        const { data, error } = await client.auth.signUp({
+          email: e,
+          password: p,
+          options: {
+            emailRedirectTo:
+              "https://caurivoin-ai.github.io/caurivo-website/"
+          }
+        });
+        if (error) throw error;
+
+        showStatus(
+          data.session
+            ? "Account created. You are signed in."
+            : "Account request received. Check your email to verify it, then log in."
+        );
+      } else {
+        const { error } = await client.auth.signInWithPassword({
+          email: e,
+          password: p
+        });
+        if (error) throw error;
+        showStatus("Login successful.");
+      }
+    } catch (error) {
+      showStatus(error.message || "Something went wrong. Please try again.");
+    } finally {
+      signup.disabled = false;
+      login.disabled = false;
+    }
+  }
+
+  signup.addEventListener("click", () => runAuth("signup"));
+  login.addEventListener("click", () => runAuth("login"));
+
+  logout.addEventListener("click", async () => {
+    const { error } = await client.auth.signOut();
+    showStatus(error ? error.message : "You have logged out.");
+  });
+
+  client.auth.onAuthStateChange((_event, session) => {
+    const signedIn = Boolean(session?.user);
+    logout.hidden = !signedIn;
+    signup.hidden = signedIn;
+    login.hidden = signedIn;
+    email.disabled = signedIn;
+    password.disabled = signedIn;
+    showStatus(
+      signedIn
+        ? "Signed in as " + session.user.email
+        : "Create an account or log in to continue."
+    );
+  });
+
+  client.auth.getSession().then(({ data, error }) => {
+    if (error) showStatus(error.message);
+    else if (!data.session) {
+      showStatus("Create an account or log in to continue.");
+    }
+  });
+})();
+</script>
+
+
 </body>
 </html>
