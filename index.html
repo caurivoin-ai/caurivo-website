@@ -139,10 +139,83 @@ if(calc)calc.onclick=()=>{let r=Number(document.getElementById("rev").value),e=N
 const save=document.getElementById("saveSettings");
 if(save)save.onclick=()=>document.getElementById("message").textContent="Demo setting updated for this screen.";
 if(name==="Dashboard")chart();
+if(document.getElementById("demoForm") && typeof caurivoRenderSavedEntries==="function") caurivoRenderSavedEntries();
 }
 document.getElementById("action").onclick=()=>show(current==="Dashboard"?"Reports":current);
 window.addEventListener("resize",()=>{if(current==="Dashboard")chart()});
 show("Dashboard");
+
+/* CAURIVO DEMO STORAGE: local to this browser only; not secure server storage. */
+const CAURIVO_STORAGE_KEY = "caurivo_demo_entries_v1";
+function caurivoReadEntries(){
+  try { return JSON.parse(localStorage.getItem(CAURIVO_STORAGE_KEY) || "[]"); }
+  catch(error) { return []; }
+}
+function caurivoWriteEntries(entries){
+  localStorage.setItem(CAURIVO_STORAGE_KEY, JSON.stringify(entries));
+}
+function caurivoRenderSavedEntries(){
+  const message = document.getElementById("message");
+  const form = document.getElementById("demoForm");
+  if (!message || !form) return;
+  const titleNode = form.querySelector("h2");
+  const title = titleNode ? titleNode.textContent : "Demo entries";
+  const entries = caurivoReadEntries().filter(entry => entry.type === title);
+  const wrap = document.createElement("div");
+  wrap.style.marginTop = "16px";
+  const heading = document.createElement("h3");
+  heading.textContent = "Saved on this device (" + entries.length + ")";
+  wrap.appendChild(heading);
+  if (!entries.length) {
+    const p = document.createElement("p");
+    p.className = "small";
+    p.textContent = "No saved demo entries yet.";
+    wrap.appendChild(p);
+  } else {
+    entries.slice().reverse().forEach(entry => {
+      const item = document.createElement("div");
+      item.className = "rowline";
+      const details = document.createElement("div");
+      entry.fields.forEach(field => {
+        const line = document.createElement("div");
+        line.textContent = field.label + ": " + field.value;
+        details.appendChild(line);
+      });
+      const date = document.createElement("div");
+      date.className = "small muted";
+      date.textContent = entry.savedAt;
+      item.appendChild(details);
+      item.appendChild(date);
+      wrap.appendChild(item);
+    });
+  }
+  message.replaceChildren(wrap);
+}
+document.addEventListener("submit", function(event){
+  const form = event.target;
+  if (!form || form.id !== "demoForm") return;
+  try {
+    const titleNode = form.querySelector("h2");
+    const labels = Array.from(form.querySelectorAll("label"));
+    const inputs = Array.from(form.querySelectorAll("input, select"));
+    const fields = inputs.map((input, index) => ({
+      label: labels[index] ? labels[index].textContent : "Field " + (index + 1),
+      value: input.value.trim()
+    }));
+    const entries = caurivoReadEntries();
+    entries.push({
+      type: titleNode ? titleNode.textContent : "Demo entry",
+      fields,
+      savedAt: new Date().toLocaleString()
+    });
+    caurivoWriteEntries(entries);
+    setTimeout(caurivoRenderSavedEntries, 0);
+  } catch(error) {
+    const message = document.getElementById("message");
+    if (message) message.textContent = "Could not save this demo entry in this browser.";
+  }
+}, true);
+
 </script>
 </body>
 </html>
