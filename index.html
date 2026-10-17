@@ -235,14 +235,16 @@ document.addEventListener("submit", function(event){
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function () {
-  const SUPABASE_URL =
+    const SUPABASE_URL =
     "https://ugcmnmbjcfxjwtrusksj.supabase.co";
-  const SUPABASE_KEY =
-    sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH;
 
-  if (SUPABASE_KEY === sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH) {
+  const SUPABASE_KEY =
+    "sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH";
+
+  if (SUPABASE_KEY === "sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH") {
     console.error(sb_publishable_qini2oQqy4WHxkzQ9PAxxw_3aI244iH);
     return;
+  }
   }
 
   const client = window.supabase.createClient(
